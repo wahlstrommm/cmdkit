@@ -4,24 +4,26 @@
   "description": "Terminal app for storing, searching, copying, and running reusable CLI commands.",
   "type": "module",
   "bin": {
-    "cmdkit": "./src/index.ts"
+    "cmdkit": "./bin/cmdkit.js"
   },
   "files": [
-    "src",
+    "bin",
+    "dist",
     "commands",
     "README.md",
     "LICENSE"
   ],
   "packageManager": "bun@1.3.10",
   "engines": {
-    "bun": ">=1.3.0"
+    "node": ">=18"
   },
   "scripts": {
     "dev": "bun run src/index.ts",
+    "build": "bun build ./src/index.ts --target=node --outfile ./dist/index.js",
     "test": "bun test",
     "validate": "bun run src/index.ts validate",
     "check": "bun test && bun run src/index.ts validate",
-    "prepublishOnly": "bun run check"
+    "prepublishOnly": "bun run check && bun run build"
   },
   "keywords": [
     "cli",

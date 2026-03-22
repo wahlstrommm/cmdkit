@@ -35,7 +35,14 @@ bun install
 bun run src/index.ts
 ```
 
-Global install for Bun users:
+Global install:
+
+```bash
+npm install -g cmdkit
+cmdkit
+```
+
+Or with Bun:
 
 ```bash
 bun install -g cmdkit
@@ -56,20 +63,21 @@ cmdkit validate
 
 ## Publish Notes
 
-`cmdkit` is currently packaged as a Bun-first CLI. That means:
+`cmdkit` is developed with Bun, but the published package now ships a built `dist/` bundle plus a standard `bin/` wrapper. That means:
 
-- the executable uses `#!/usr/bin/env bun`
-- users need Bun installed to run the published package
-- npm publishing is still useful for distribution, but this is not yet a plain Node-only binary
+- contributors can keep using Bun for development
+- published installs can run through the packaged Node entrypoint
+- CI verifies tests, validation, and build output
 
 Recommended release flow:
 
 ```bash
 bun run check
+bun run build
 npm publish
 ```
 
-If you want truly frictionless npm usage for people without Bun, the next packaging step is to ship a built `bin/` wrapper or standalone artifact.
+If you want even tighter packaging later, the next step would be a standalone artifact or release binaries per platform.
 
 ## TUI Shortcuts
 
