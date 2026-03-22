@@ -1,6 +1,6 @@
 {
   "name": "@wahlstrommm/cmdkit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Terminal app for storing, searching, copying, and running reusable CLI commands.",
   "type": "module",
   "bin": {
