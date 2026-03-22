@@ -35,6 +35,13 @@ bun install
 bun run src/index.ts
 ```
 
+Global install for Bun users:
+
+```bash
+bun install -g cmdkit
+cmdkit
+```
+
 Useful CLI commands:
 
 ```bash
@@ -46,6 +53,23 @@ cmdkit import ./my-commands.yaml
 cmdkit export ./cmdkit-export.yaml
 cmdkit validate
 ```
+
+## Publish Notes
+
+`cmdkit` is currently packaged as a Bun-first CLI. That means:
+
+- the executable uses `#!/usr/bin/env bun`
+- users need Bun installed to run the published package
+- npm publishing is still useful for distribution, but this is not yet a plain Node-only binary
+
+Recommended release flow:
+
+```bash
+bun run check
+npm publish
+```
+
+If you want truly frictionless npm usage for people without Bun, the next packaging step is to ship a built `bin/` wrapper or standalone artifact.
 
 ## TUI Shortcuts
 
