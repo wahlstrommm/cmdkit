@@ -1,8 +1,45 @@
 # cmdkit
 
+[npm-url]: https://www.npmjs.com/package/@wahlstrommm/cmdkit
+[repo-url]: https://github.com/wahlstrommm/cmdkit
+[issues-url]: https://github.com/wahlstrommm/cmdkit/issues
+
+[![npm version](https://img.shields.io/npm/v/%40wahlstrommm%2Fcmdkit)](https://www.npmjs.com/package/@wahlstrommm/cmdkit)
+[![npm downloads](https://img.shields.io/npm/dm/%40wahlstrommm%2Fcmdkit)](https://www.npmjs.com/package/@wahlstrommm/cmdkit)
+[![CI](https://img.shields.io/github/actions/workflow/status/wahlstrommm/cmdkit/ci.yml?branch=main)](https://github.com/wahlstrommm/cmdkit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](/home/mw/Projects/project/cmdkit/LICENSE)
+
 `cmdkit` is a terminal-first command vault for the CLI snippets you need often enough to keep, but not often enough to memorize.
 
 It works well as a personal local command library, but it can also load shared community packs from the repo. That means one user can keep everything private, while another can use the same app as an open source command library with contributions from others.
+
+Links:
+
+- npm: [@wahlstrommm/cmdkit](https://www.npmjs.com/package/@wahlstrommm/cmdkit)
+- GitHub: [wahlstrommm/cmdkit](https://github.com/wahlstrommm/cmdkit)
+- Issues: [Report a bug or suggest a pack](https://github.com/wahlstrommm/cmdkit/issues)
+
+## Install
+
+```bash
+npm install -g @wahlstrommm/cmdkit
+cmdkit
+```
+
+Or with Bun:
+
+```bash
+bun install -g @wahlstrommm/cmdkit
+cmdkit
+```
+
+## Why cmdkit
+
+- Keeps rarely used commands close without turning your notes into a mess
+- Works as a private local command vault
+- Also supports shared open source command packs
+- Makes copy-first command reuse fast from the terminal
+- Adds just enough structure with tags, safety levels, placeholders, favorites, and recents
 
 ## What It Does
 
@@ -33,20 +70,6 @@ CMDKIT_HOME=/path/to/cmdkit-home bun run src/index.ts
 ```bash
 bun install
 bun run src/index.ts
-```
-
-Global install:
-
-```bash
-npm install -g @wahlstrommm/cmdkit
-cmdkit
-```
-
-Or with Bun:
-
-```bash
-bun install -g @wahlstrommm/cmdkit
-cmdkit
 ```
 
 Useful CLI commands:
