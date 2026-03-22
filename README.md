@@ -38,14 +38,14 @@ bun run src/index.ts
 Global install:
 
 ```bash
-npm install -g cmdkit
+npm install -g @wahlstrommm/cmdkit
 cmdkit
 ```
 
 Or with Bun:
 
 ```bash
-bun install -g cmdkit
+bun install -g @wahlstrommm/cmdkit
 cmdkit
 ```
 
@@ -74,7 +74,7 @@ Recommended release flow:
 ```bash
 bun run check
 bun run build
-npm publish
+npm publish --access public
 ```
 
 If you want even tighter packaging later, the next step would be a standalone artifact or release binaries per platform.
