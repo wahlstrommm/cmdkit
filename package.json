@@ -1,0 +1,39 @@
+{
+  "name": "cmdkit",
+  "version": "0.1.0",
+  "description": "Terminal app for storing, searching, copying, and running reusable CLI commands.",
+  "type": "module",
+  "bin": {
+    "cmdkit": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "commands",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "test": "bun test",
+    "validate": "bun run src/index.ts validate",
+    "check": "bun test && bun run src/index.ts validate"
+  },
+  "keywords": [
+    "cli",
+    "tui",
+    "commands",
+    "terminal",
+    "clipboard",
+    "yaml",
+    "developer-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wahlstrommm/cmdkit.git"
+  },
+  "homepage": "https://github.com/wahlstrommm/cmdkit#readme",
+  "bugs": {
+    "url": "https://github.com/wahlstrommm/cmdkit/issues"
+  },
+  "license": "MIT"
+}

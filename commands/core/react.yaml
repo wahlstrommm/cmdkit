@@ -1,0 +1,22 @@
+- id: react.dev
+  title: Start a React dev server
+  description: Start the local development server with Bun.
+  command: bun run dev
+  tags:
+    - react
+    - bun
+    - frontend
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Run this from the project root.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  author: cmdkit
+  updatedAt: 2026-03-21

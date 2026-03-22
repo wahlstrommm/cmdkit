@@ -1,0 +1,58 @@
+- id: mysql.dump
+  title: Dump a MySQL database
+  description: Create a SQL dump with a timestamped filename.
+  command: mysqldump -u {{user}} -p{{password}} {{database}} > {{database}}-$(date +%Y%m%d-%H%M%S).sql
+  tags:
+    - mysql
+    - backup
+  placeholders:
+    - name: user
+      prompt: Database user
+      default: root
+    - name: password
+      prompt: Database password
+    - name: database
+      prompt: Database name
+  copyable: true
+  runnable: false
+  notes: Consider removing the inline password before sharing terminal history.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  author: cmdkit
+  updatedAt: 2026-03-21
+
+- id: mysql.login
+  title: Open MySQL shell
+  description: Log in to a MySQL server from the terminal.
+  command: mysql -u {{user}} -p -h {{host}} {{database}}
+  tags:
+    - mysql
+    - shell
+  placeholders:
+    - name: user
+      prompt: Database user
+      default: root
+    - name: host
+      prompt: Database host
+      default: 127.0.0.1
+    - name: database
+      prompt: Default database
+  copyable: true
+  runnable: true
+  notes: Password will be prompted by MySQL.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  author: cmdkit
+  updatedAt: 2026-03-21

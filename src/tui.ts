@@ -12,11 +12,14 @@ interface TuiState {
   query: string;
   searchDraft: string;
   searchMenuOpen: boolean;
+  helpMenuOpen: boolean;
   tagFilter: string;
   tagMenuOpen: boolean;
   tagMenuIndex: number;
   sortMenuOpen: boolean;
   sortMenuIndex: number;
+  sourceMenuOpen: boolean;
+  sourceMenuIndex: number;
   source: SourceFilter;
   commands: LoadedCommand[];
   filtered: LoadedCommand[];
@@ -199,6 +202,14 @@ function sortMenuOptions(): { label: string; value: SortMode }[] {
   ];
 }
 
+function sourceMenuOptions(): { label: string; value: SourceFilter }[] {
+  return [
+    { label: "All", value: "all" },
+    { label: "Local", value: "local" },
+    { label: "Community", value: "community" }
+  ];
+}
+
 function tagMenuOptions(commands: LoadedCommand[]): string[] {
   return ["(clear tag filter)", ...listAvailableTags(commands)];
 }
@@ -231,6 +242,20 @@ function overlayBox(title: string, lines: string[], width: number): string[] {
   const heading = `${color("|", FG_SKY)} ${truncate(title, innerWidth)} ${color("|", FG_SKY)}`;
   const body = lines.map((line) => `${color("|", FG_SKY)} ${truncate(line, innerWidth)} ${color("|", FG_SKY)}`);
   return [top, heading, top, ...body, top];
+}
+
+function sectionDivider(label: string): string {
+  return color(`• ${label.toUpperCase()}`, FG_SKY, BOLD);
+}
+
+function commandBlock(commandText: string, width: number): string[] {
+  const innerWidth = Math.max(20, width - 10);
+  const lines = wrap(commandText, innerWidth);
+  return [
+    color(`┌${"─".repeat(innerWidth + 2)}┐`, FG_SKY),
+    ...lines.map((line) => `${color("│", FG_SKY)} ${color(truncate(line, innerWidth), FG_CREAM, BOLD)} ${color("│", FG_SKY)}`),
+    color(`└${"─".repeat(innerWidth + 2)}┘`, FG_SKY)
+  ];
 }
 
 function buildFrame(state: TuiState): string {
@@ -283,15 +308,17 @@ function buildFrame(state: TuiState): string {
               `${color("Open", FG_SKY, BOLD)}      ${color("Press o, Enter, Space, or right arrow to open details.", FG_SAND)}`,
               `${color("Then", FG_SKY, BOLD)}      ${color("Copy, run, edit, favorite, or back become active.", FG_SAND)}`
             ]),
+        "",
+        sectionDivider("Command"),
+        ...commandBlock(selected.command, rightWidth),
+        ...(selected.notes ? ["", sectionDivider("Notes"), color(selected.notes, FG_SAND)] : []),
+        "",
+        sectionDivider("Context"),
         `Tags      ${selected.tags.map((tag) => `#${tag}`).join(" ") || "-"}`,
         `Shells    ${selected.shells.join(", ") || "-"}`,
         `Platforms ${selected.platforms.join(", ") || "-"}`,
         `Author    ${selected.author}`,
         `Updated   ${selected.updatedAt}`,
-        "",
-        color("Command", FG_SKY, BOLD),
-        color(selected.command, FG_CREAM),
-        ...(selected.notes ? ["", color("Notes", FG_SKY, BOLD), color(selected.notes, FG_SAND)] : []),
         "",
         color(`File: ${selected.filePath}`, FG_SLATE)
       ]
@@ -332,12 +359,39 @@ function buildFrame(state: TuiState): string {
     status
   ];
 
-  if (!state.tagMenuOpen && !state.sortMenuOpen && !state.searchMenuOpen) {
+  if (!state.tagMenuOpen && !state.sortMenuOpen && !state.searchMenuOpen && !state.sourceMenuOpen && !state.helpMenuOpen) {
     return frameLines.join("\n");
   }
 
   const overlayWidth = Math.min(56, Math.max(34, Math.floor(screenWidth * 0.42)));
-  const overlayLines = state.searchMenuOpen
+  const overlayLines = state.helpMenuOpen
+    ? overlayBox(
+        "Keyboard Help",
+        [
+          color("Library", FG_SKY, BOLD),
+          color("j / k        Move in the command list", FG_SAND),
+          color("o            Open details", FG_SAND),
+          color("Enter/Space  Open details", FG_SAND),
+          color("/            Search commands", FG_SAND),
+          color("g            Filter by tag", FG_SAND),
+          color("s            Sort commands", FG_SAND),
+          color("t            Filter by source", FG_SAND),
+          color("n            Create a new command", FG_SAND),
+          "",
+          color("Details", FG_SKY, BOLD),
+          color("Left/Right   Move between actions", FG_SAND),
+          color("Tab          Next action", FG_SAND),
+          color("Enter        Use selected action", FG_SAND),
+          color("b / Esc      Back to library", FG_SAND),
+          color("c r e f      Jump to copy/run/edit/favorite", FG_SAND),
+          "",
+          color("Global", FG_SKY, BOLD),
+          color("?            Toggle this help", FG_SAND),
+          color("q            Quit cmdkit", FG_SAND)
+        ],
+        overlayWidth
+      )
+    : state.searchMenuOpen
     ? overlayBox(
         "Search Commands",
         [
@@ -360,6 +414,24 @@ function buildFrame(state: TuiState): string {
             const prefix = selectedRow ? color(">", FG_CREAM, BOLD) : color("-", FG_SLATE);
             const label = selectedRow ? color(tag, FG_CREAM, BOLD) : color(tag, FG_SAND);
             return `${prefix} ${label}`;
+          })
+        ],
+        overlayWidth
+      )
+    : state.sourceMenuOpen
+    ? overlayBox(
+        "Source Filter",
+        [
+          color("Choose which command sources to show.", FG_SAND),
+          color("Esc closes without changing the filter.", FG_SLATE),
+          "",
+          ...sourceMenuOptions().map((option, index) => {
+            const selectedRow = index === state.sourceMenuIndex;
+            const isCurrent = option.value === state.source;
+            const prefix = selectedRow ? color(">", FG_CREAM, BOLD) : color("-", FG_SLATE);
+            const current = isCurrent ? color(" (current)", FG_MINT, BOLD) : "";
+            const label = selectedRow ? color(option.label, FG_CREAM, BOLD) : color(option.label, FG_SAND);
+            return `${prefix} ${label}${current}`;
           })
         ],
         overlayWidth
@@ -436,11 +508,14 @@ export async function startTui(): Promise<void> {
     query: "",
     searchDraft: "",
     searchMenuOpen: false,
+    helpMenuOpen: false,
     tagFilter: "",
     tagMenuOpen: false,
     tagMenuIndex: 0,
     sortMenuOpen: false,
     sortMenuIndex: 0,
+    sourceMenuOpen: false,
+    sourceMenuIndex: 0,
     source: "all",
     commands: initial.commands,
     filtered: initial.commands,
@@ -479,7 +554,12 @@ export async function startTui(): Promise<void> {
           return;
         }
 
-        if (state.searchMenuOpen) {
+        if (state.helpMenuOpen) {
+          if (key.name === "escape" || key.sequence === "?") {
+            state.helpMenuOpen = false;
+            state.status = "Help closed.";
+          }
+        } else if (state.searchMenuOpen) {
           if (key.name === "escape") {
             state.searchMenuOpen = false;
             state.searchDraft = state.query;
@@ -522,6 +602,23 @@ export async function startTui(): Promise<void> {
             state.tagMenuOpen = false;
             state.status = state.tagFilter ? `Tag: ${state.tagFilter}` : "Tag filter cleared.";
           }
+        } else if (state.sourceMenuOpen) {
+          const options = sourceMenuOptions();
+          if (key.name === "escape" || key.sequence === "t") {
+            state.sourceMenuOpen = false;
+            state.status = `Source unchanged: ${state.source}`;
+          } else if (key.sequence === "j" || key.name === "down") {
+            state.sourceMenuIndex = Math.min(state.sourceMenuIndex + 1, Math.max(0, options.length - 1));
+          } else if (key.sequence === "k" || key.name === "up") {
+            state.sourceMenuIndex = Math.max(0, state.sourceMenuIndex - 1);
+          } else if (key.name === "return") {
+            state.source = options[state.sourceMenuIndex]?.value ?? state.source;
+            state.filtered = applyFilters(state);
+            state.selectedIndex = 0;
+            state.detailActionIndex = 0;
+            state.sourceMenuOpen = false;
+            state.status = `Source filter: ${state.source}`;
+          }
         } else if (state.sortMenuOpen) {
           const options = sortMenuOptions();
           if (key.name === "escape" || key.sequence === "s") {
@@ -546,16 +643,18 @@ export async function startTui(): Promise<void> {
           } else if (key.sequence === "k" || key.name === "up") {
             state.selectedIndex = Math.max(0, state.selectedIndex - 1);
             state.detailActionIndex = 0;
+          } else if (key.sequence === "?") {
+            state.helpMenuOpen = true;
+            state.status = "Help open.";
           } else if (key.sequence === "o" || key.name === "return" || key.name === "right" || key.sequence === "l" || key.name === "space") {
             state.activePane = "details";
             state.detailActionIndex = 0;
             state.status = "Details open. Move between actions and press Enter.";
           } else if (key.sequence === "t") {
-            state.source = state.source === "all" ? "local" : state.source === "local" ? "community" : "all";
-            state.filtered = applyFilters(state);
-            state.selectedIndex = 0;
-            state.detailActionIndex = 0;
-            state.status = `Source filter: ${state.source}`;
+            const options = sourceMenuOptions();
+            state.sourceMenuOpen = true;
+            state.sourceMenuIndex = Math.max(0, options.findIndex((option) => option.value === state.source));
+            state.status = "Source menu open.";
           } else if (key.sequence === "s") {
             const options = sortMenuOptions();
             state.sortMenuOpen = true;
@@ -579,7 +678,10 @@ export async function startTui(): Promise<void> {
           const actions = detailActions(command);
           const actionCount = actions.length;
           const currentAction = actions[state.detailActionIndex] ?? actions[0];
-          if (key.name === "escape" || key.sequence === "b") {
+          if (key.sequence === "?") {
+            state.helpMenuOpen = true;
+            state.status = "Help open.";
+          } else if (key.name === "escape" || key.sequence === "b") {
             state.activePane = "library";
             state.status = "Back to library.";
           } else if (key.name === "tab" || key.name === "right" || key.sequence === "l") {

@@ -1,0 +1,53 @@
+- id: wp.plugin.list
+  title: List WordPress plugins
+  description: Show installed plugins and their status.
+  command: wp plugin list --path={{wp_path}}
+  tags:
+    - wordpress
+    - wp-cli
+  placeholders:
+    - name: wp_path
+      prompt: WordPress path
+      default: /var/www/html
+  copyable: true
+  runnable: true
+  notes: Requires wp-cli and a valid WordPress path.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  author: cmdkit
+  updatedAt: 2026-03-21
+
+- id: wp.search-replace.dry-run
+  title: Dry-run search replace
+  description: Preview a search and replace in WordPress without writing changes.
+  command: wp search-replace '{{search}}' '{{replace}}' --all-tables --dry-run --path={{wp_path}}
+  tags:
+    - wordpress
+    - database
+  placeholders:
+    - name: search
+      prompt: Search string
+    - name: replace
+      prompt: Replacement string
+    - name: wp_path
+      prompt: WordPress path
+      default: /var/www/html
+  copyable: true
+  runnable: true
+  notes: Remove --dry-run only after verifying the preview output.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  author: cmdkit
+  updatedAt: 2026-03-21
