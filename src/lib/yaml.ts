@@ -84,6 +84,7 @@ export function stringifyCommands(commands: CommandDefinition[]): string {
         serializeList(command.platforms, "    "),
         `  safety: ${command.safety}`,
         `  source: ${command.source}`,
+        `  group: ${quote(command.group ?? "")}`,
         `  author: ${quote(command.author)}`,
         `  updatedAt: ${quote(command.updatedAt)}`
       ];

@@ -41,6 +41,7 @@ export function normalizeCommand(input: unknown): CommandDefinition {
     platforms: stringArray(record.platforms, "platforms"),
     safety: safetyValue(record.safety),
     source: sourceValue(record.source),
+    group: optionalString(record.group)?.trim() || undefined,
     author: requiredString(record.author, "author"),
     updatedAt: requiredString(record.updatedAt, "updatedAt")
   };

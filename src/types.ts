@@ -2,6 +2,7 @@ export type CommandSource = "local" | "community";
 export type SafetyLevel = "safe" | "warning" | "destructive";
 export type SourceFilter = "all" | CommandSource;
 export type SortMode = "title" | "recent" | "favorites" | "safety" | "source";
+export type GroupMode = "group" | "source" | "none";
 
 export interface Placeholder {
   name: string;
@@ -23,6 +24,7 @@ export interface CommandDefinition {
   platforms: string[];
   safety: SafetyLevel;
   source: CommandSource;
+  group?: string;
   author: string;
   updatedAt: string;
 }
