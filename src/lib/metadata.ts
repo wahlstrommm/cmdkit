@@ -43,3 +43,14 @@ export async function toggleFavorite(id: string): Promise<boolean> {
   }
   return !exists;
 }
+
+export async function removeMetadataForCommand(id: string): Promise<void> {
+  const metadata = await loadMetadata();
+  metadata.favorites = metadata.favorites.filter((entry) => entry !== id);
+  metadata.recent = metadata.recent.filter((entry) => entry !== id);
+  try {
+    await saveMetadata(metadata);
+  } catch {
+    // Ignore metadata persistence failures so deletes still succeed.
+  }
+}

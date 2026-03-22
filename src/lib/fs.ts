@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 export async function ensureDir(path: string): Promise<void> {
@@ -17,4 +17,8 @@ export async function readJsonFile<T>(path: string, fallback: T): Promise<T> {
   } catch {
     return fallback;
   }
+}
+
+export async function removeFile(path: string): Promise<void> {
+  await rm(path, { force: true });
 }

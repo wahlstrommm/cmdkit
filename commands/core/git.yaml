@@ -1,0 +1,71 @@
+- id: git.status.short
+  title: Show short git status
+  description: Display a compact summary of tracked and untracked changes.
+  command: git status --short
+  tags:
+    - git
+    - vcs
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Run this from inside a git repository.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: git
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: git.pull.rebase
+  title: Pull with rebase
+  description: Update the current branch while keeping local commits on top.
+  command: git pull --rebase origin {{branch}}
+  tags:
+    - git
+    - sync
+  placeholders:
+    - name: branch
+      prompt: Branch name
+      default: main
+  copyable: true
+  runnable: true
+  notes: Use this when you want a linear history and know your local work can be rebased.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: git
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: git.log.graph
+  title: Show git graph
+  description: Print a decorated one-line commit graph for the current repository.
+  command: git log --oneline --decorate --graph --all -20
+  tags:
+    - git
+    - history
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Great for getting quick context before a rebase or merge.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: git
+  author: cmdkit
+  updatedAt: 2026-03-22

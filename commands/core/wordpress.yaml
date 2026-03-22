@@ -20,6 +20,7 @@
     - macos
   safety: safe
   source: community
+  group: wordpress
   author: cmdkit
   updatedAt: 2026-03-21
 
@@ -49,5 +50,6 @@
     - macos
   safety: warning
   source: community
+  group: wordpress
   author: cmdkit
   updatedAt: 2026-03-21

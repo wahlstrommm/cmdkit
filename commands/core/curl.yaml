@@ -1,0 +1,80 @@
+- id: curl.head
+  title: Fetch response headers
+  description: Send a HEAD request and inspect the response headers only.
+  command: curl -I {{url}}
+  tags:
+    - curl
+    - http
+  placeholders:
+    - name: url
+      prompt: URL
+      default: https://example.com
+  copyable: true
+  runnable: true
+  notes: Useful for quick checks on redirects, caching, and status codes.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: curl
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: curl.download
+  title: Download a file with curl
+  description: Download a remote file and save it under a chosen filename.
+  command: curl -L {{url}} -o {{output}}
+  tags:
+    - curl
+    - download
+  placeholders:
+    - name: url
+      prompt: File URL
+    - name: output
+      prompt: Output filename
+      default: download.bin
+  copyable: true
+  runnable: true
+  notes: Use this when the remote endpoint may redirect before serving the file.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: curl
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: curl.json
+  title: GET JSON with pretty output
+  description: Fetch a JSON endpoint and pretty-print the response with jq.
+  command: curl -s {{url}} | jq
+  tags:
+    - curl
+    - json
+    - api
+  placeholders:
+    - name: url
+      prompt: API URL
+      default: https://api.github.com
+  copyable: true
+  runnable: true
+  notes: Requires jq to be installed locally.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: curl
+  author: cmdkit
+  updatedAt: 2026-03-22

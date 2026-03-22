@@ -1,0 +1,90 @@
+- id: postgres.psql
+  title: Open psql shell
+  description: Start a psql session against a PostgreSQL database.
+  command: psql -h {{host}} -U {{user}} -d {{database}}
+  tags:
+    - postgres
+    - database
+  placeholders:
+    - name: host
+      prompt: Database host
+      default: 127.0.0.1
+    - name: user
+      prompt: Database user
+      default: postgres
+    - name: database
+      prompt: Database name
+  copyable: true
+  runnable: true
+  notes: Password prompting depends on your local PostgreSQL auth setup.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: postgres
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: postgres.dump
+  title: Dump a PostgreSQL database
+  description: Create a PostgreSQL dump file from the command line.
+  command: pg_dump -h {{host}} -U {{user}} -d {{database}} > {{database}}.sql
+  tags:
+    - postgres
+    - backup
+  placeholders:
+    - name: host
+      prompt: Database host
+      default: 127.0.0.1
+    - name: user
+      prompt: Database user
+      default: postgres
+    - name: database
+      prompt: Database name
+  copyable: true
+  runnable: false
+  notes: Use a safer output location if you are handling production data.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: postgres
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: postgres.list-dbs
+  title: List PostgreSQL databases
+  description: Print available PostgreSQL databases from the command line.
+  command: psql -h {{host}} -U {{user}} -l
+  tags:
+    - postgres
+    - database
+  placeholders:
+    - name: host
+      prompt: Database host
+      default: 127.0.0.1
+    - name: user
+      prompt: Database user
+      default: postgres
+  copyable: true
+  runnable: true
+  notes: Good first check when you are unsure which database name to use.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: postgres
+  author: cmdkit
+  updatedAt: 2026-03-22

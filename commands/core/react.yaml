@@ -18,5 +18,6 @@
     - macos
   safety: safe
   source: community
+  group: react
   author: cmdkit
   updatedAt: 2026-03-21

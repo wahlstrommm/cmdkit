@@ -1,8 +1,9 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import { basename, extname, join } from "node:path";
 import { COMMANDS_ROOT, getLocalCommandsDir } from "../config";
-import type { CommandDefinition, CommandMetadata, LoadResult, LoadedCommand, SortMode, SourceFilter } from "../types";
-import { ensureDir, writeTextFile } from "./fs";
+import type { CommandDefinition, CommandMetadata, GroupMode, LoadResult, LoadedCommand, SortMode, SourceFilter } from "../types";
+import { ensureDir, removeFile, writeTextFile } from "./fs";
+import { removeMetadataForCommand } from "./metadata";
 import { normalizeCommand } from "./schema";
 import { parseYamlFile, stringifyCommands } from "./yaml";
 
@@ -110,13 +111,47 @@ export function listAvailableTags(commands: LoadedCommand[]): string[] {
   return [...new Set(commands.flatMap((command) => command.tags.map((tag) => tag.toLowerCase())))].sort();
 }
 
+export function commandGroupLabel(command: LoadedCommand, groupMode: GroupMode): string {
+  if (groupMode === "none") {
+    return "";
+  }
+
+  if (groupMode === "source") {
+    return command.source;
+  }
+
+  const explicitGroup = command.group?.trim();
+  if (explicitGroup) {
+    return explicitGroup.toLowerCase();
+  }
+
+  if (command.source === "local") {
+    return "local";
+  }
+
+  return command.tags[0]?.toLowerCase() || command.source;
+}
+
 export async function saveLocalCommand(command: CommandDefinition): Promise<string> {
   const localCommandsDir = await getLocalCommandsDir();
   await ensureDir(localCommandsDir);
-  const filePath = join(localCommandsDir, `${command.id}.yaml`);
-  const contents = stringifyCommands([{ ...command, source: "local" }]);
+  const normalizedCommand = {
+    ...command,
+    source: "local" as const,
+    group: command.group?.trim().toLowerCase() || undefined
+  };
+  const filePath = join(localCommandsDir, `${normalizedCommand.id}.yaml`);
+  const contents = stringifyCommands([normalizedCommand]);
   await writeTextFile(filePath, contents);
   return filePath;
+}
+
+export async function deleteLocalCommand(command: LoadedCommand): Promise<void> {
+  if (command.source !== "local") {
+    throw new Error("Only local commands can be deleted.");
+  }
+  await removeFile(command.filePath);
+  await removeMetadataForCommand(command.id);
 }
 
 export function sortCommands(commands: LoadedCommand[], sortMode: SortMode, metadata?: CommandMetadata): LoadedCommand[] {
@@ -159,6 +194,28 @@ export function sortCommands(commands: LoadedCommand[], sortMode: SortMode, meta
     }
 
     return left.title.localeCompare(right.title);
+  });
+}
+
+export function sortCommandsForDisplay(
+  commands: LoadedCommand[],
+  sortMode: SortMode,
+  groupMode: GroupMode,
+  metadata?: CommandMetadata
+): LoadedCommand[] {
+  const sorted = sortCommands(commands, sortMode, metadata);
+  if (groupMode === "none") {
+    return sorted;
+  }
+
+  const rank = new Map(sorted.map((command, index) => [command.id, index]));
+
+  return [...sorted].sort((left, right) => {
+    const groupCompare = commandGroupLabel(left, groupMode).localeCompare(commandGroupLabel(right, groupMode));
+    if (groupCompare !== 0) {
+      return groupCompare;
+    }
+    return (rank.get(left.id) ?? 0) - (rank.get(right.id) ?? 0);
   });
 }
 

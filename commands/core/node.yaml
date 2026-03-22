@@ -1,0 +1,70 @@
+- id: node.version
+  title: Show Node version
+  description: Print the currently active Node.js version.
+  command: node --version
+  tags:
+    - node
+    - runtime
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Helpful for sanity-checking local runtime selection.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: node
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: npm.install
+  title: Install project dependencies
+  description: Install dependencies for the current Node project using npm.
+  command: npm install
+  tags:
+    - node
+    - npm
+    - dependencies
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Run this from the project root where package.json exists.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: node
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: bun.install
+  title: Install dependencies with Bun
+  description: Install dependencies in the current project using Bun.
+  command: bun install
+  tags:
+    - bun
+    - node
+    - dependencies
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Use this in projects that use Bun as the package manager.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: node
+  author: cmdkit
+  updatedAt: 2026-03-22

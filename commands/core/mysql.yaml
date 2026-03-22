@@ -24,6 +24,7 @@
     - macos
   safety: warning
   source: community
+  group: mysql
   author: cmdkit
   updatedAt: 2026-03-21
 
@@ -54,5 +55,6 @@
     - macos
   safety: safe
   source: community
+  group: mysql
   author: cmdkit
   updatedAt: 2026-03-21

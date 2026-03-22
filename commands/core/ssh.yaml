@@ -1,0 +1,89 @@
+- id: ssh.connect
+  title: Connect over SSH
+  description: Open an SSH session to a remote host with an optional user.
+  command: ssh {{user}}@{{host}}
+  tags:
+    - ssh
+    - remote
+  placeholders:
+    - name: user
+      prompt: SSH user
+      default: root
+    - name: host
+      prompt: Hostname or IP
+  copyable: true
+  runnable: true
+  notes: Replace the default user if your server does not allow root login.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: ssh
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: ssh.copy-key
+  title: Copy SSH key to server
+  description: Install your local public key on a remote server for passwordless login.
+  command: ssh-copy-id {{user}}@{{host}}
+  tags:
+    - ssh
+    - auth
+  placeholders:
+    - name: user
+      prompt: SSH user
+      default: root
+    - name: host
+      prompt: Hostname or IP
+  copyable: true
+  runnable: true
+  notes: Requires ssh-copy-id to be installed locally.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: ssh
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: ssh.tunnel.local
+  title: Create local SSH tunnel
+  description: Forward a local port to a remote service through SSH.
+  command: ssh -L {{local_port}}:127.0.0.1:{{remote_port}} {{user}}@{{host}}
+  tags:
+    - ssh
+    - tunnel
+  placeholders:
+    - name: local_port
+      prompt: Local port
+      default: "8080"
+    - name: remote_port
+      prompt: Remote port
+      default: "80"
+    - name: user
+      prompt: SSH user
+      default: root
+    - name: host
+      prompt: Hostname or IP
+  copyable: true
+  runnable: true
+  notes: Useful for temporary access to remote services that are not publicly exposed.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: ssh
+  author: cmdkit
+  updatedAt: 2026-03-22

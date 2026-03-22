@@ -50,6 +50,7 @@ cmdkit
 - Store local commands in YAML
 - Import and export local command packs
 - Track favorites and recent commands locally
+- Ship starter community packs for Git, Docker, Node, Linux, SSH, Postgres, MySQL, WordPress, React, and curl
 
 ## Local-First by Default
 
@@ -197,6 +198,21 @@ If you want to contribute shared commands:
 3. Test the command from the TUI or CLI
 
 See [CONTRIBUTING.md](/home/mw/Projects/project/cmdkit/CONTRIBUTING.md) for the command guidelines.
+
+## Included Packs
+
+Current starter packs include:
+
+- `git`
+- `docker`
+- `node`
+- `linux`
+- `ssh`
+- `postgres`
+- `mysql`
+- `wordpress`
+- `react`
+- `curl`
 
 ## Roadmap
 

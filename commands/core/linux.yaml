@@ -1,0 +1,70 @@
+- id: linux.ls.human
+  title: List files with human sizes
+  description: Show a detailed file listing with human-readable sizes.
+  command: ls -lah
+  tags:
+    - linux
+    - files
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Good default listing command for shell sessions.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: linux
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: linux.du.top
+  title: Show largest entries in current directory
+  description: Summarize sizes in the current directory and sort the largest entries first.
+  command: du -sh ./* 2>/dev/null | sort -hr | head -20
+  tags:
+    - linux
+    - disk
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Useful for quickly finding large folders or files.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: linux
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: linux.find.process
+  title: Find a running process
+  description: Search the current process list for a given process name.
+  command: ps aux | grep {{process}} | grep -v grep
+  tags:
+    - linux
+    - process
+  placeholders:
+    - name: process
+      prompt: Process name
+  copyable: true
+  runnable: true
+  notes: Useful when you need a quick process lookup from the shell.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: linux
+  author: cmdkit
+  updatedAt: 2026-03-22

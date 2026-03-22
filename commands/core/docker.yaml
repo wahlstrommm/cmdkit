@@ -1,0 +1,70 @@
+- id: docker.ps
+  title: List running containers
+  description: Show active Docker containers with the default table output.
+  command: docker ps
+  tags:
+    - docker
+    - containers
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Useful as a quick first step when checking a local Docker setup.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: docker
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: docker.logs.follow
+  title: Follow container logs
+  description: Stream logs from a running container with follow mode enabled.
+  command: docker logs -f {{container}}
+  tags:
+    - docker
+    - logs
+  placeholders:
+    - name: container
+      prompt: Container name or id
+  copyable: true
+  runnable: true
+  notes: Use Ctrl+C to stop following the log stream.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: safe
+  source: community
+  group: docker
+  author: cmdkit
+  updatedAt: 2026-03-22
+
+- id: docker.compose.up
+  title: Start docker compose stack
+  description: Start services in detached mode from the current compose project.
+  command: docker compose up -d
+  tags:
+    - docker
+    - compose
+  placeholders: []
+  copyable: true
+  runnable: true
+  notes: Run this from the directory that contains your compose file.
+  shells:
+    - bash
+    - zsh
+  platforms:
+    - linux
+    - macos
+  safety: warning
+  source: community
+  group: docker
+  author: cmdkit
+  updatedAt: 2026-03-22
